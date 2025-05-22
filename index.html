@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>web-tex-lender</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
+  <style>
+    body {
+      font-family: 'Yu Gothic', 'Meiryo', sans-serif;
+      margin: 40px;
+      background: #f9f9fa;
+      color: #222;
+      line-height: 1.8;
+    }
+    .content {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 2em 2.5em;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    textarea {
+      width: 100%;
+      min-height: 60px;
+      font-size: 1em;
+      padding: 0.7em;
+      border-radius: 8px;
+      border: 1px solid #bbb;
+      resize: vertical;
+      margin-bottom: 1.2em;
+      font-family: 'Yu Gothic', 'Meiryo', sans-serif;
+      background: #fcfcfe;
+    }
+    #preview {
+      min-height: 2em;
+      background: #f6f6f8;
+      border-radius: 8px;
+      padding: 1em;
+      margin-bottom: 1.2em;
+      word-break: break-all;
+    }
+    label {
+      font-size: 1em;
+      color: #444;
+      margin-bottom: 0.4em;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <label for="userinput">【数式・テキストを入力】</label><br>
+    <textarea id="userinput" placeholder="ここにテキストや数式を入力（例: $e^{ix} = \cos x + i\sin x$）"></textarea>
+    <div id="preview"></div>
+  </div>
+  <script>
+    function renderMath(target) {
+      if (window.renderMathInElement) {
+        renderMathInElement(target, {
+          delimiters: [
+            {left: '$', right: '$', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ]
+        });
+      }
+    }
+    const input = document.getElementById('userinput');
+    const preview = document.getElementById('preview');
+    input.addEventListener('input', () => {
+      // 改行を<br>に変換
+      const escaped = input.value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+      preview.innerHTML = escaped.replace(/\n/g, "<br>");
+      renderMath(preview);
+    });
+    // 初期化
+    preview.innerHTML = '';
+  </script>
+</body>
+</html>
